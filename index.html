@@ -18,7 +18,29 @@
     <!-- Este contenedor tendrá el botón para cerrar sesión -->
 
     <div id="controles">
+        <button id="add_user">Agregar</button>
         <button id="logout">Cerrar sesión</button>
+    </div>
+    <!-- Contenedor form para agragar user -->
+    <div id="form_container" >
+        <div id="tittle_form">
+            <h2>Agregar Usuario</h2>
+
+        </div>
+        <form id="form" class="form">
+           
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" name="name" required autocomplete="off">
+            <label for="name">Username:</label>
+            <input type="text" id="user_name"  required autocomplete="off">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required  autocomplete="off">
+            <label for="name">Telefono:</label>
+            <input type="text" id="telefono" name="telefono" required autocomplete="off">
+            <button type="submit" id="btn_add_user"> ➕ Agregar</button>
+            <button  id="btn_cancel_add_user">Cancelar</button>
+
+        </form>
     </div>
     <!-- Este container mostrará los usuarios obtenidos de la API -->
     <div id="container"></div>

@@ -1,5 +1,6 @@
 
 function render_users(data) {
+    $("#form_container").hide();
     if (!Array.isArray(data) || data.length === 0) {
         console.error("Invalid or empty data");
         return;
@@ -135,5 +136,15 @@ $(document).ready(function () {
     $("#back").click(function () {
 
         window.history.back();
+    });
+
+    $("#add_user").click(function () {
+        $("#form_container").toggle();
+        $(this).text("Añadiendo usuario...").prop("disabled", true);
+    });
+    $("#btn_cancel_add_user").click(function () {
+        $("#form_container").toggle();
+        $("#add_user").text("Añadir usuario").prop("disabled", false);
+    
     });
 });

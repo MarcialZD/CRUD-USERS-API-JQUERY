@@ -62,6 +62,7 @@ body {
 
 }
 
+
 .user_button_detalle {
     background-color: #5bd3de;
     color: white;
@@ -96,7 +97,16 @@ body {
     font: bold;
     font-size: 15px;
 }
-
+#add_user{
+    background-color: #7f94e0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font: bold;
+    font-size: 15px;
+}
 #back {
     background-color: #4ea2b3;
     color: white;
@@ -107,4 +117,12 @@ body {
     transition: background-color 0.3s ease;
     font: bold;
     font-size: 15px;
+}
+
+#form_container{
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(208, 238, 238);
+    display: none;
 }

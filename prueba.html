@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Sky</title>
+  <style>
+    :root {
+      --scrollY: 0px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      overflow-x: hidden;
+      background-color: #040404;
+
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      flex-wrap: wrap;
+    }
+
+    .left {
+      position: relative;
+      flex: 1;
+      background-color: #fff;
+      color: #1a1a1a;
+      padding: 4rem 2rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left h1 {
+      font-size: 3.5rem;
+      z-index: 2;
+      position: relative;
+      color: #1a1a1a;
+      transition: border 0.3s ease, color 0.3s ease;
+      padding: 0 10px;
+      letter-spacing: 1px;
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+    }
+
+    .right {
+      flex: 1;
+    }
+
+    .right img {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+    }
+
+    .circle {
+      position: absolute;
+      background-color: #e74a4a;
+      border-radius: 50%;
+      z-index: 0;
+      opacity: 0.5;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      will-change: transform;
+    }
+
+    .circle1 {
+      width: 180px;
+      height: 180px;
+      top: 5%;
+      left: 5%;
+    }
+
+    .circle2 {
+      width: 150px;
+      height: 150px;
+      top: 20%;
+      left: 40%;
+    }
+
+    .circle3 {
+      width: 130px;
+      height: 130px;
+      top: 50%;
+      left: 10%;
+    }
+
+    .circle4 {
+      width: 120px;
+      height: 120px;
+      top: 55%;
+      left: 60%;
+    }
+
+    .circle5 {
+      width: 140px;
+      height: 140px;
+      top: 30%;
+      left: 75%;
+    }
+
+    .circle6 {
+      width: 100px;
+      height: 100px;
+      top: 70%;
+      left: 80%;
+    }
+
+    .wrapper {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-start;
+      position: relative;
+      z-index: 2;
+    }
+
+    button {
+      width: 200px;
+      height: 70px;
+      background: linear-gradient(to left top, #e36a6a 50%, #473b41 50%);
+      border-style: none;
+      color: #fff;
+      font-size: 23px;
+      letter-spacing: 3px;
+      font-family: 'Lato';
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      padding: 0px;
+      overflow: hidden;
+      transition: all .5s;
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+      z-index: 2;
+    }
+
+    button span {
+      position: absolute;
+      display: block;
+      z-index: 2;
+    }
+
+    button span:nth-child(1) {
+      height: 3px;
+      width: 200px;
+      top: 0px;
+      left: -200px;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0), #edeae9);
+      animation: span1 2s linear infinite;
+      animation-delay: 1s;
+    }
+
+    @keyframes span1 {
+      0% {
+        left: -200px;
+      }
+
+      100% {
+        left: 200px;
+      }
+    }
+
+    button span:nth-child(2) {
+      height: 70px;
+      width: 3px;
+      top: -70px;
+      right: 0px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #e6e5e2);
+      animation: span2 2s linear infinite;
+      animation-delay: 2s;
+    }
+
+    @keyframes span2 {
+      0% {
+        top: -70px;
+      }
+
+      100% {
+        top: 70px;
+      }
+    }
+
+    button span:nth-child(3) {
+      height: 3px;
+      width: 200px;
+      right: -200px;
+      bottom: 0px;
+      background: linear-gradient(to left, rgba(0, 0, 0, 0), #f6e58d);
+      animation: span3 2s linear infinite;
+      animation-delay: 3s;
+    }
+
+    @keyframes span3 {
+      0% {
+        right: -200px;
+      }
+
+      100% {
+        right: 200px;
+      }
+    }
+
+    button span:nth-child(4) {
+      height: 70px;
+      width: 3px;
+      bottom: -70px;
+      left: 0px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0), #f6e58d);
+      animation: span4 2s linear infinite;
+      animation-delay: 4s;
+    }
+
+    @keyframes span4 {
+      0% {
+        bottom: -70px;
+      }
+
+      100% {
+        bottom: 70px;
+      }
+    }
+
+    button:hover {
+      transition: all .5s;
+      transform: rotate(-3deg) scale(1.1);
+      box-shadow: 0px 3px 5px rgba(0, 0, 0, .4);
+    }
+
+    button:hover span {
+      animation-play-state: paused;
+    }
+
+    .scroll-space {
+      height: 200vh;
+      background-color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left,
+      .right {
+        flex: none;
+        width: 100%;
+        height: auto;
+      }
+
+      .left h1 {
+        font-size: 2.5rem;
+        text-align: center;
+      }
+
+      .circle {
+        display: none;
+      }
+
+      .wrapper {
+        justify-content: center;
+      }
+
+      .right img {
+        height: auto;
+      }
+    }
+
+    #ubicacion {
+      display: flex;
+      align-items: center;
+      /* Centrar verticalmente los elementos */
+      padding: 2rem;
+      background-color: #fff;
+      color: #333;
+      border-radius: 15px;
+      /* Bordes más suaves */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      /* Sombra más prominente */
+      margin: 20px 0;
+      /* Espacio entre el contenedor y los bordes */
+      max-width: 100%;
+      /* Aseguramos que ocupe el 100% del ancho */
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+
+
+    #ubicacion .left {
+      flex: 1;
+      padding-right: 2rem;
+    }
+
+    #ubicacion .right {
+      flex: 1;
+    }
+
+    #ubicacion h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #ubicacion p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    #distancia {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #2d2d2d;
+    }
+
+    #ubicacion iframe {
+      border-radius: 10px;
+      border: 0;
+      width: 100%;
+      height: 300px;
+      max-height: 400px;
+      margin-top: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    #ubicacion iframe:hover {
+      transform: scale(1.05);
+      /* Efecto suave de zoom en el iframe */
+    }
+
+    /* Estilo para pantallas pequeñas */
+    @media (max-width: 768px) {
+      #ubicacion {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      #ubicacion .left,
+      #ubicacion .right {
+        flex: none;
+        width: 100%;
+        padding-right: 0;
+      }
+
+      #ubicacion h2 {
+        font-size: 1.6rem;
+      }
+
+      #ubicacion p,
+      #distancia {
+        font-size: 1rem;
+      }
+
+      #ubicacion iframe {
+        height: 250px;
+      }
+    }
+    #left-container {
+  background-image: url('hotel.png');
+  background-size: 99%;       
+  background-position: bottom;   
+  background-repeat: no-repeat;  
+  background-color: rgb(30, 30, 30); 
+}
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="left" id="left-container" >
+      <div class="circle circle1"></div>
+      <div class="circle circle2"></div>
+      <div class="circle circle3"></div>
+      <div class="circle circle4"></div>
+      <div class="circle circle5"></div>
+      <div class="circle circle6"></div>
+
+      <h1 id="main-title"></h1>
+
+      <div class="wrapper">
+        <button>
+          Ver Habitaciones
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="right">
+      <img src="image.png" alt="Grupo de personas" />
+    </div>
+  </div>
+
+  <div id="ubicacion">
+    <div class="left">
+      <h2>Ubicación</h2>
+      <p><strong>Dirección:</strong> Av. Los Ángeles 453, Comas 15314, Lima, Perú</p>
+      <p id="distancia">Calculando distancia desde tu ubicación...</p>
+    </div>
+    <!-- Contenedor responsivo para el iframe -->
+    <div class="right">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243.9702069511002!2d-77.06355103311537!3d-11.938226237755881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105d10034091f7f%3A0x126e68cf21a74b73!2sHotel%20SKY!5e0!3m2!1ses-419!2spe!4v1744663805670!5m2!1ses-419!2spe"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+
+  <div class="scroll-space"></div>
+
+  <script>
+    const container = document.getElementById('left-container');
+    const circles = document.querySelectorAll('.circle');
+    const title = document.getElementById('main-title');
+
+    let directions = [];
+    let positions = [];
+    let speeds = [];
+
+    const originalText = "Vive una experiencia única";
+    title.innerHTML = "";
+    [...originalText].forEach((char) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      span.style.color = "#1a1a1a";
+      span.style.transition = "color 0.1s linear";
+      title.appendChild(span);
+    });
+
+    circles.forEach((circle, i) => {
+      const angle = Math.random() * 2 * Math.PI;
+      directions[i] = {
+        x: Math.cos(angle),
+        y: Math.sin(angle)
+      };
+
+      positions[i] = {
+        x: circle.offsetLeft,
+        y: circle.offsetTop
+      };
+
+      speeds[i] = 1.5 + Math.random() * 1.0;
+    });
+
+    function animate() {
+      const maxX = container.clientWidth;
+      const maxY = container.clientHeight;
+
+      circles.forEach((circle, i) => {
+        const circleWidth = circle.offsetWidth;
+        const circleHeight = circle.offsetHeight;
+
+        positions[i].x += directions[i].x * speeds[i];
+        positions[i].y += directions[i].y * speeds[i];
+
+        if (positions[i].x <= 0 || positions[i].x + circleWidth >= maxX) {
+          directions[i].x *= -1;
+          positions[i].x = Math.max(0, Math.min(positions[i].x, maxX - circleWidth));
+        }
+
+        if (positions[i].y <= 0 || positions[i].y + circleHeight >= maxY) {
+          directions[i].y *= -1;
+          positions[i].y = Math.max(0, Math.min(positions[i].y, maxY - circleHeight));
+        }
+
+        circle.style.transform = `translate(${positions[i].x}px, ${positions[i].y}px)`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+
+  <script>
+    const distanciaElemento = document.getElementById("distancia");
+
+    const LAT_HOTEL = -11.946107; // Coordenadas aproximadas del hotel
+    const LNG_HOTEL = -77.057106;
+
+    // Fórmula de Haversine para calcular la distancia entre dos puntos
+    function calcularDistancia(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radio de la Tierra en km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    // Obtener ubicación del usuario
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const latUsuario = pos.coords.latitude;
+          const lngUsuario = pos.coords.longitude;
+          const distancia = calcularDistancia(latUsuario, lngUsuario, LAT_HOTEL, LNG_HOTEL);
+          console.log(`latitud: ${latUsuario}, longitud: ${lngUsuario}`);
+          distanciaElemento.textContent = `Te encuentras a aproximadamente ${distancia.toFixed(2)} km del hotel.`;
+        },
+        (err) => {
+          distanciaElemento.textContent = "No se pudo obtener tu ubicación.";
+          console.error(err);
+        },
+        {
+          enableHighAccuracy: true, // Solicitar alta precisión
+          timeout: 5000, // Tiempo máximo de espera
+          maximumAge: 0 // No usar ubicación almacenada en caché
+        }
+      );
+    } else {
+      distanciaElemento.textContent = "Tu navegador no soporta geolocalización.";
+    }
+
+  </script>
+
+</body>
+
+</html>
