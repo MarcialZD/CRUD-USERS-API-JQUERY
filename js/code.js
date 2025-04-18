@@ -1,6 +1,41 @@
+function append_user(user, index = 0) {
+    const $tbody = $("#users_table tbody");
+
+    let $tr = $("<tr style='display:none;'>");
+    $tr.append(`<td>${user.id}</td>`);
+    $tr.append(`<td>${user.name}</td>`);
+    $tr.append(`<td>${user.username}</td>`);
+    $tr.append(`<td>${user.email}</td>`);
+    $tr.append(`<td>${user.phone}</td>`);
+
+    let $actions = $("<td>");
+    let $btnEliminar = $("<button class='btn btn-danger btn-sm me-2'>Eliminar</button>");
+    let $btnDetalle = $("<button class='btn btn-info btn-sm'>Detalle</button>");
+
+    $btnEliminar.click(function () {
+        $tr.fadeOut(500, function () {
+            $tr.remove();
+            let users = JSON.parse(localStorage.getItem("users")).filter((u) => u.id !== user.id);
+            localStorage.setItem("users", JSON.stringify(users));
+        });
+    });
+
+    $btnDetalle.click(function () {
+        location.href = `detalle_user.html?id=${user.id}`;
+    });
+
+    $actions.append($btnEliminar, $btnDetalle);
+    $tr.append($actions);
+
+    $tbody.append($tr);
+    setTimeout(() => {
+        $tr.fadeIn();
+    }, index * 200);
+}
 
 function render_users(data) {
     $("#form_container").hide();
+
     if (!Array.isArray(data) || data.length === 0) {
         console.error("Invalid or empty data");
         return;
@@ -11,41 +46,13 @@ function render_users(data) {
     }
 
     let users = JSON.parse(localStorage.getItem("users"));
-    $("#container").empty();
+    $("#users_table tbody").empty();
 
     users.forEach((user, index) => {
-        let div_user = $("<div class='user'>").hide();
-        let div_user_name = $(`<div class='user_name'>Nombre: ${user.name}</div>`);
-        let div_user_username = $(`<div class='user_name'>Username: ${user.username}</div>`);
-        let div_user_email = $(`<div class='user_email'>Email: ${user.email}</div>`);
-        let div_user_phone = $(`<div class='user_phone'>Teléfono: ${user.phone}</div>`);
-
-        let div_buttons = $("<div class='user_buttons'>");
-        let div_button_eliminar = $("<button class='user_button_eliminar'>Eliminar</button>");
-        let div_button_detalle = $("<button class='user_button_detalle'>Detalle</button>");
-
-        div_button_eliminar.click(function () {
-            div_user.fadeOut(500, function () {
-                $(this).remove();
-                users = users.filter((u) => u.id !== user.id);
-                localStorage.setItem("users", JSON.stringify(users));
-            });
-        });
-
-        div_button_detalle.click(function () {
-            location.href = `detalle_user.html?id=${user.id}`;
-
-        });
-
-        div_buttons.append(div_button_eliminar).append(div_button_detalle);
-        div_user.append(div_user_name, div_user_username, div_user_email, div_user_phone, div_buttons);
-        $("#container").append(div_user);
-
-        setTimeout(() => {
-            div_user.fadeIn();
-        }, index * 200);
+        append_user(user, index);
     });
 }
+
 function render_detalle_user(user) {
     if (!user) {
         console.error("User not found");
@@ -53,20 +60,15 @@ function render_detalle_user(user) {
     }
 
     let div_user = $("<div class='user'>").hide();
-    let div_user_name = $(`<div class='user_name'>Nombre: ${user.name}</div>`);
-    let div_user_username = $(`<div class='user_name'>Username: ${user.username}</div>`);
-    let div_user_email = $(`<div class='user_email'>Email: ${user.email}</div>`);
-    let div_user_phone = $(`<div class='user_phone'>Teléfono: ${user.phone}</div>`);
-
-    div_user.append(div_user_name, div_user_username, div_user_email, div_user_phone);
+    div_user.append(`<div class='user_name'>Nombre: ${user.name}</div>`);
+    div_user.append(`<div class='user_name'>Username: ${user.username}</div>`);
+    div_user.append(`<div class='user_email'>Email: ${user.email}</div>`);
+    div_user.append(`<div class='user_phone'>Teléfono: ${user.phone}</div>`);
     $(".container_detail_user").append(div_user);
-
-    setTimeout(() => {
-        div_user.fadeIn();
-    }, 200);
-
+    div_user.fadeIn();
 }
-if (location.pathname === "/detalle_user.html") {
+
+if (location.pathname.includes("/detalle_user.html")) {
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
     if (id) {
@@ -81,14 +83,12 @@ if (location.pathname === "/detalle_user.html") {
         console.error("ID not found in URL");
     }
 }
-$(document).ready(function () {
-    const currentPage = location.pathname;
 
+$(document).ready(function () {
     $.ajax({
         url: 'https://jsonplaceholder.typicode.com/users',
         method: 'GET',
         success: function (data) {
-            console.log(data);
             render_users(data);
         },
         error: function (err) {
@@ -104,7 +104,7 @@ $(document).ready(function () {
             },
             buttonsStyling: false
         });
-    
+
         swalWithBootstrapButtons.fire({
             title: "¿Estás seguro?",
             text: "¡No podrás revertir esto!",
@@ -123,7 +123,7 @@ $(document).ready(function () {
                 }).then(() => {
                     location.href = "index.html";
                 });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else {
                 swalWithBootstrapButtons.fire({
                     title: "Cancelado",
                     text: "Tu sesión sigue activa.",
@@ -132,19 +132,54 @@ $(document).ready(function () {
             }
         });
     });
-    
-    $("#back").click(function () {
-
-        window.history.back();
-    });
 
     $("#add_user").click(function () {
         $("#form_container").toggle();
         $(this).text("Añadiendo usuario...").prop("disabled", true);
     });
+
     $("#btn_cancel_add_user").click(function () {
         $("#form_container").toggle();
-        $("#add_user").text("Añadir usuario").prop("disabled", false);
-    
+        $("#add_user").text("Agregar").prop("disabled", false);
+    });
+
+    $("#form").submit(function (event) {
+        event.preventDefault();
+
+        let name = $("#name").val();
+        let username = $("#user_name").val();
+        let email = $("#email").val();
+        let phone = $("#telefono").val();
+
+        if (!name || !username || !email || !phone) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Por favor completa todos los campos.",
+            });
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem("users"));
+        let newUser = {
+            id: users.length + 1,
+            name: name,
+            username: username,
+            email: email,
+            phone: phone
+        };
+
+        users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(users));
+        append_user(newUser); 
+        $("#form_container").toggle();
+        $("#add_user").text("Agregar").prop("disabled", false);
+        $("#form")[0].reset();
+
+        Swal.fire({
+            icon: "success",
+            title: "Usuario añadido",
+            text: "El usuario ha sido añadido correctamente.",
+        });
     });
 });
